@@ -45,6 +45,16 @@ public class EmployeeService {
 	}
 	
 	/**
+	 * 名前を指定して従業員一覧を取得.
+	 * 
+	 * @param name : 検索する名前
+	 * @return 検索さてた従業員一覧
+	 */
+	public List<Employee> searchByName(String name){
+		return employeeRepository.findByName(name);
+	}
+	
+	/**
 	 * 従業員情報を更新します.
 	 * 
 	 * @param employee　更新した従業員情報

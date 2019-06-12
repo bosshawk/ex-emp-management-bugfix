@@ -20,7 +20,14 @@ import jp.co.sample.emp_management.domain.Employee;
  */
 @Repository
 public class EmployeeRepository {
+	
+	/** テーブル名 */
+	private static final String TABLE_NAME = "employees";
 
+	/** すべてのカラム */
+	private static final String ALL_COLMUN 
+	= " id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count ";
+	
 	/**
 	 * Employeeオブジェクトを生成するローマッパー.
 	 */
@@ -55,6 +62,22 @@ public class EmployeeRepository {
 		List<Employee> developmentList = template.query(sql, EMPLOYEE_ROW_MAPPER);
 
 		return developmentList;
+	}
+	
+	/**
+	 * 従業員一覧を曖昧検索する.
+	 * 
+	 * @param name : 検索する名前
+	 * @return 検索された従業員一覧 存在しない場合はサイズ0件の従業員情報一覧を返す
+	 */
+	public List<Employee> findByName(String name){
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT ");	sql.append(ALL_COLMUN);
+		sql.append(" FROM ");	sql.append(TABLE_NAME);
+		sql.append(" WHERE name LIKE :name ORDER BY hire_date DESC ");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%"+name+"%");
+		List<Employee> employeeList = template.query(sql.toString(), param, EMPLOYEE_ROW_MAPPER); 
+		return employeeList;
 	}
 
 	/**
