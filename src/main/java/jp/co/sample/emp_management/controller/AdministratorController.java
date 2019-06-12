@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -80,8 +81,9 @@ public class AdministratorController {
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		administrator = administratorService.insert(administrator);
-		if(administrator!=null) {			
+		Boolean isCheck = administratorService.checkMailAddress(administrator.getMailAddress());
+		if(isCheck==true) {			
+			administratorService.insert(administrator);
 			return "redirect:/";
 		}else {
 			FieldError fieldError

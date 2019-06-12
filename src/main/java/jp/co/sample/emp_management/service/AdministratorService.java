@@ -24,15 +24,24 @@ public class AdministratorService {
 	 * 管理者情報を登録します.
 	 * 
 	 * @param administrator 管理者情報
-	 * @return 成功時:管理者情報or失敗時:null
 	 */
-	public Administrator insert(Administrator administrator) {
-		if(administratorRepository.findByMailAddress(administrator.getMailAddress())==null){			
-			administratorRepository.insert(administrator);
-			return administrator;
+	public void insert(Administrator administrator) {
+		administratorRepository.insert(administrator);
+	}
+	
+	/**
+	 * メールアドレスが管理者DBに存在するか調べる.
+	 * 
+	 * @param mailAddress 検索するメールアドレス
+	 * @return 存在する:true 存在しない:false
+	 */
+	public boolean checkMailAddress(String mailAddress) {
+		if(administratorRepository.findByMailAddress(mailAddress)==null) {
+			return true;			
 		}else {
-			return null;
+			return false;
 		}
+		
 	}
 	
 	/**
