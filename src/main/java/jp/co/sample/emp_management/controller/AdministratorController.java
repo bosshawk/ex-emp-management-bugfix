@@ -78,6 +78,13 @@ public class AdministratorController {
 		if(result.hasErrors()) {
 			return toInsert();
 		}
+		if( !form.getMailAddress().equals(form.getConfirmationPassword()) ) {
+			FieldError fieldError
+			=new FieldError(result.getObjectName(), "confirmationPassword", "パスワードと確認用パスワードが一致しません");
+			result.addError(fieldError);
+			return toInsert();
+		}
+		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);

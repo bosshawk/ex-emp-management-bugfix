@@ -22,6 +22,11 @@ public class InsertAdministratorForm {
 	@NotBlank(message="パスワードを入力してください")
 	@Size(max=127,message="1文字以上127文字以下でパスワードを入力してください")
 	private String password;
+	/** 確認用パスワード */
+	@NotBlank(message="パスワードを入力してください")
+	@Size(max=127,message="1文字以上127文字以下でパスワードを入力してください")
+	private String confirmationPassword;
+	
 	public String getName() {
 		return name;
 	}
@@ -40,10 +45,17 @@ public class InsertAdministratorForm {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getConfirmationPassword() {
+		return confirmationPassword;
+	}
+	public void setConfirmationPassword(String confirmationPassword) {
+		this.confirmationPassword = confirmationPassword;
+	}
 	@Override
 	public String toString() {
 		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
-				+ "]";
+				+ ", confirmationPassword=" + confirmationPassword + "]";
 	}
+	
 	
 }
