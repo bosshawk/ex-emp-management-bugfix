@@ -59,7 +59,7 @@ public class AdministratorController {
 	 * @return 管理者登録画面
 	 */
 	@RequestMapping("/toInsert")
-	public String toInsert(Model model) {
+	public String toInsert() {
 		return "administrator/insert";
 	}
 
@@ -73,10 +73,9 @@ public class AdministratorController {
 	@RequestMapping("/insert")
 	public String insert(
 			@Validated InsertAdministratorForm form,
-			BindingResult result,
-			Model model) {
+			BindingResult result) {
 		if(result.hasErrors()) {
-			return toInsert(model);
+			return toInsert();
 		}
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
@@ -88,7 +87,7 @@ public class AdministratorController {
 			FieldError fieldError
 			=new FieldError(result.getObjectName(), "mailAddress", "このメールアドレスは既に登録されています");
 			result.addError(fieldError);
-			return toInsert(model);
+			return toInsert();
 		}
 	}
 
