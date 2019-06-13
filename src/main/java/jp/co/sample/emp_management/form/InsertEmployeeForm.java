@@ -1,20 +1,11 @@
 package jp.co.sample.emp_management.form;
 
-import java.util.Date;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber;
-
-import jp.co.sample.emp_management.domain.Employee;
 
 /**
  * 従業員情報追加時に使用するフォーム.
@@ -25,15 +16,15 @@ import jp.co.sample.emp_management.domain.Employee;
 public class InsertEmployeeForm {
 
 	/** 従業員名 */
-	@NotBlank(message="名前を入力して下さい")
+	@NotBlank(message = "名前を入力して下さい")
 	private String name;
 	/** 画像 */
 	private MultipartFile image;
 	/** 性別 */
-	@NotEmpty(message="性別を選択して下さい")
+	@NotEmpty(message = "性別を選択して下さい")
 	private String gender;
 	/** 入社日 */
-	@NotEmpty(message="日付を入力して下さい")
+	@NotEmpty(message = "日付を入力して下さい")
 	private String hireDate;
 	/** メールアドレス */
 	@NotBlank(message = "メールアドレスを入力してください")
@@ -61,73 +52,6 @@ public class InsertEmployeeForm {
 	private String dependentsCount;
 
 	/**
-	 * フォームの内容を従業員情報にコピーする.
-	 * 
-	 * @return コピーされた従業員情報
-	 */
-	public Employee copyEmployee() {
-		Employee employee = new Employee();
-		BeanUtils.copyProperties(this, employee);
-		employee.setImage(getStrImage());
-		employee.setHireDate(getDateHireDate());
-		employee.setZipCode(getHyphenZipCode());
-		employee.setSalary(getIntSalary());
-		employee.setTelephone(getHyphenTelephone());
-		employee.setDependentsCount(getIntDependentsCount());
-		return employee;
-	}
-	
-	/**
-	 * imageの名前を返す.
-	 * 
-	 * @return String型のimage
-	 */
-	public String getStrImage() {
-		return this.image.getOriginalFilename();
-	}
-
-	/**
-	 * Date型の入社日を返す.
-	 * 
-	 * @return Date型のhireDate
-	 */
-	public Date getDateHireDate() {
-		return java.sql.Date.valueOf(this.hireDate);
-	}
-	
-	/**
-	 * 郵便番号にハイフンをつける.
-	 * 
-	 * @return zipCodeにハイフンをつける
-	 */
-	public String getHyphenZipCode() {
-		StringBuffer zipCode = new StringBuffer(this.zipCode);
-		int hyphenIndex = zipCode.indexOf("-");
-		if(hyphenIndex == -1) {
-			zipCode.insert(3, "-");
-			return zipCode.toString();
-		}else {
-			return this.zipCode;
-		}
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @return telephoneにハイフンをつける
-	 */
-	public String getHyphenTelephone() {
-		final PhoneNumberUtil PHONE_NUMBER_UTIL = PhoneNumberUtil.getInstance();
-		try {
-			Phonenumber.PhoneNumber phoneNumber = PHONE_NUMBER_UTIL.parse(this.telephone, "JP");
-			String telephone = PHONE_NUMBER_UTIL.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);	
-			return telephone;
-		}catch(NumberParseException e) {
-			return this.telephone;
-		}
-	}
-	
-	/**
 	 * int型の給料を返す.
 	 * 
 	 * @return int型のsalary
@@ -144,22 +68,6 @@ public class InsertEmployeeForm {
 	public int getIntDependentsCount() {
 		return Integer.parseInt(this.dependentsCount);
 	}
-	
-	/**
-	 * 写真のファイルの拡張子を返す.
-	 * 
-	 * @return imageファイルの拡張子
-	 */
-	public String getExtentionImage() {
-		int dot = image.getOriginalFilename().lastIndexOf(".");
-		String extention = "";
-		if (dot > 0) {
-			extention = image.getOriginalFilename().substring(dot).toLowerCase();
-		}
-		return extention;
-	}
-
-	
 
 	public String getName() {
 		return name;

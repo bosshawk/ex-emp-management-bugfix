@@ -92,7 +92,10 @@ public class EmployeeService {
 	 * 
 	 * @param employee 追加する従業員情報
 	 */
-	public void insert(Employee employee) {
+	public synchronized Employee insert(Employee employee) {
+		int id = employeeRepository.findByMaxId();
+		employee.setId(id+1);
 		employeeRepository.insert(employee);
+		return employee;
 	}
 }

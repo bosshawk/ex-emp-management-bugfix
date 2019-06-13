@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +27,8 @@ import jp.co.sample.emp_management.form.InsertEmployeeForm;
 import jp.co.sample.emp_management.form.SearchNameForm;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
 import jp.co.sample.emp_management.service.EmployeeService;
+import jp.co.sample.emp_management.util.ConvertUtils;
+import jp.co.sample.emp_management.util.FileUtils;
 
 /**
  * 従業員情報を操作するコントローラー.
@@ -166,8 +169,6 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/toInsert")
 	public String toInsert() {
-		Path path = Paths.get("src/main/resources/static/img");
-		System.out.println(path.toAbsolutePath().toString());
 		return "employee/insert";
 	}
 	
@@ -182,7 +183,7 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("/insert")
-	public synchronized String insert(
+	public String insert(
 			@Validated InsertEmployeeForm form,
 			BindingResult result
 			) {
@@ -193,25 +194,28 @@ public class EmployeeController {
 		Boolean hasMailAddress = employeeService.checkByMailAddress(form.getMailAddress());
 		if (hasMailAddress) {
 			result.rejectValue("mailAddress", null, "このメールアドレスは既に登録されています");
-		}		
+		}
+		// imageの拡張子
+		String extention = FileUtils.getExtentionFile(form.getImage());
+		// 拡張子がpngかjpgのもの以外は保存しないためエラーを返す
+		if( !form.getImage().isEmpty() && !".png".equals(extention) && !".jpg".equals(extention) ) {
+			result.rejectValue("image", null, "pngかjpg形式を選択して下さい");
+		}
+		
 		if ( result.hasErrors() ) {
 			return toInsert();
 		}
 		
-		// 拡張子がpngかjpgのもの以外は保存しないためエラーを返す
-		String extention = form.getExtentionImage();
-		if( !".png".equals(extention) && !".jpg".equals(extention) ) {
-			result.rejectValue("image", null, "pngかjpg形式を選択して下さい");
-			return toInsert();
-		}
-		
-		
 		String imageName = saveImage(form.getImage(),extention);
-		int id = employeeService.searchByMaxId() + 1;
 		
-		Employee employee = form.copyEmployee();
+		Employee employee = new Employee();
+		BeanUtils.copyProperties(form, employee);
+		employee.setHireDate(ConvertUtils.getSqlDateHireDate(form.getHireDate()));
+		employee.setZipCode(ConvertUtils.getHyphenZipCode(form.getZipCode()));
+		employee.setSalary(form.getIntSalary());
+		employee.setTelephone(ConvertUtils.getHypehnTelephone(form.getTelephone()));
+		employee.setDependentsCount(form.getIntDependentsCount());
 		employee.setImage(imageName);
-		employee.setId(id);
 		
 		employeeService.insert(employee);
 
