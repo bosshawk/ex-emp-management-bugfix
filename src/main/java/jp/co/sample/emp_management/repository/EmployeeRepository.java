@@ -2,12 +2,16 @@ package jp.co.sample.emp_management.repository;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import jp.co.sample.emp_management.domain.Employee;
@@ -50,7 +54,8 @@ public class EmployeeRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
-
+	
+	
 	/**
 	 * 従業員一覧情報を入社日順で取得します.
 	 * 
@@ -79,6 +84,44 @@ public class EmployeeRepository {
 		List<Employee> employeeList = template.query(sql.toString(), param, EMPLOYEE_ROW_MAPPER); 
 		return employeeList;
 	}
+	
+	/**
+	 * メールアドレスを指定して従業員情報を検索する.
+	 * 
+	 * @param mailAddress : 検索するメールアドレス
+	 * @return 検索された従業員情報
+	 */
+	public Employee findByMailAddress(String mailAddress) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT ");	sql.append(ALL_COLMUN);
+		sql.append(" FROM ");	sql.append(TABLE_NAME);
+		sql.append(" WHERE mail_address=:mailAddress ");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress);
+		List<Employee> employeeList = template.query(sql.toString(), param, EMPLOYEE_ROW_MAPPER);
+		if(employeeList.size() != 0) {
+			return employeeList.get(0);
+		}else {			
+			return null;
+		}
+	}
+	
+	/**
+	 * IDの最大値を検索する.
+	 * 
+	 * @return DBに存在するidの最大値 or 0
+	 */
+	public int findByMaxId() {
+		StringBuffer sql = new StringBuffer();
+		sql.append(" SELECT max(id) FROM ");
+		sql.append(TABLE_NAME);
+		SqlParameterSource param = new MapSqlParameterSource();
+		Integer id = template.queryForObject(sql.toString(), param, Integer.class);
+		if( id == null){
+			return 0;
+		}else {
+			return id;
+		}
+	}
 
 	/**
 	 * 主キーから従業員情報を取得します.
@@ -106,4 +149,22 @@ public class EmployeeRepository {
 		String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
 		template.update(updateSql, param);
 	}
+	
+	
+	/**
+	 * 従業員情報を追加する.<br>
+	 * 従業員情報を追加し追加したidを取得しセットして返す
+	 * 
+	 * @param employee : 追加する従業員情報
+	 * @return 従業員情報
+	 */
+	public void insert(Employee employee) {
+		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+		StringBuffer sql = new StringBuffer();
+		sql.append(" INSERT INTO ");	sql.append(TABLE_NAME);
+		sql.append("(");	sql.append(ALL_COLMUN);
+		sql.append(") values(:id,:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount)");
+		template.update(sql.toString(), param);
+	}
+	
 }

@@ -136,8 +136,8 @@
 							  </tr>
 							</table>
 							<button type="submit" class="btn btn-primary">更新</button>
-							<br>
-							<a href="list.html" th:href="@{/employee/showList}">従業員リスト</a>
+							&nbsp;&nbsp;&nbsp;
+							<a href="list.html" th:href="@{/employee/showList}" class="btn btn-primary">戻る</a>
 						</fieldset>
 					</form>
 					
@@ -150,6 +150,6 @@
 	<!-- end container -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="../../static/js/bootstrap.min.js"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 </html>

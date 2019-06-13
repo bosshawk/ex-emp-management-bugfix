@@ -55,11 +55,44 @@ public class EmployeeService {
 	}
 	
 	/**
+	 * メールアドレスがDBに登録されているか調べる.
+	 * 
+	 * @param mailAddress 検索するメールアドレス
+	 * @return ある場合:true/ない場合:false
+	 */
+	public Boolean checkByMailAddress(String mailAddress) {
+		if(employeeRepository.findByMailAddress(mailAddress) != null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
+	/**
+	 * IDの最大値を検索する.
+	 * 
+	 * @return IDの最大値
+	 */
+	public int searchByMaxId() {
+		return employeeRepository.findByMaxId();
+	}
+	
+	/**
 	 * 従業員情報を更新します.
 	 * 
 	 * @param employee　更新した従業員情報
 	 */
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
+	}
+	
+	/**
+	 * 従業員情報を追加する.
+	 * 
+	 * @param employee 追加する従業員情報
+	 */
+	public void insert(Employee employee) {
+		employeeRepository.insert(employee);
 	}
 }
