@@ -155,6 +155,9 @@ public class EmployeeController {
 		return "redirect:/employee/showList";
 	}
 
+	/////////////////////////////////////////////////////
+	// ユースケース：従業員追加画面に遷移する
+	/////////////////////////////////////////////////////
 	/**
 	 * 従業員情報追加画面に遷移する.
 	 * 
@@ -166,7 +169,17 @@ public class EmployeeController {
 		System.out.println(path.toAbsolutePath().toString());
 		return "employee/insert";
 	}
-
+	
+	/////////////////////////////////////////////////////
+	// ユースケース：従業員情報を追加する
+	/////////////////////////////////////////////////////
+	/**
+	 * 従業員情報を追加する.
+	 * 
+	 * @param form 追加する従業員情報
+	 * @param result エラー 
+	 * @return 従業員一覧画面
+	 */
 	@RequestMapping("/insert")
 	public synchronized String insert(
 			@Validated InsertEmployeeForm form,
