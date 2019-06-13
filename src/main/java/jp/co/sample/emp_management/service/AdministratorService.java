@@ -36,7 +36,7 @@ public class AdministratorService {
 	 * @return 存在する:true 存在しない:false
 	 */
 	public boolean checkMailAddress(String mailAddress) {
-		if(administratorRepository.findByMailAddress(mailAddress)==null) {
+		if(administratorRepository.findByMailAddress(mailAddress) != null) {
 			return true;			
 		}else {
 			return false;

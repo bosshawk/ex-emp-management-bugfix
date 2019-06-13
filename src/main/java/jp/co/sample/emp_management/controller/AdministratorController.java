@@ -75,29 +75,25 @@ public class AdministratorController {
 	public String insert(
 			@Validated InsertAdministratorForm form,
 			BindingResult result) {
+		if( !form.getMailAddress().equals(form.getConfirmationPassword()) ) {
+			result.rejectValue("confirmationPassword", null, "パスワードと確認用パスワードが一致しません");
+		}
+		Boolean hasMailAddress = administratorService.checkMailAddress(form.getMailAddress());
+		if(hasMailAddress) {			
+			result.rejectValue("mailAddress", null, "このメールアドレスは既に登録されています");
+		}
 		if(result.hasErrors()) {
 			return toInsert();
 		}
-		if( !form.getMailAddress().equals(form.getConfirmationPassword()) ) {
-			FieldError fieldError
-			=new FieldError(result.getObjectName(), "confirmationPassword", "パスワードと確認用パスワードが一致しません");
-			result.addError(fieldError);
-			return toInsert();
-		}
+		
 		
 		Administrator administrator = new Administrator();
+		
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		Boolean isCheck = administratorService.checkMailAddress(administrator.getMailAddress());
-		if(isCheck==true) {			
-			administratorService.insert(administrator);
-			return "redirect:/";
-		}else {
-			FieldError fieldError
-			=new FieldError(result.getObjectName(), "mailAddress", "このメールアドレスは既に登録されています");
-			result.addError(fieldError);
-			return toInsert();
-		}
+		administratorService.insert(administrator);
+		return "redirect:/";
+		
 	}
 
 	/////////////////////////////////////////////////////
