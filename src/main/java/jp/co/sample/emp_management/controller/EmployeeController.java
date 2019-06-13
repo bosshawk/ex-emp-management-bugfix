@@ -121,17 +121,18 @@ public class EmployeeController {
 			model.addAttribute("searchMessage", "全件検索しました");
 			return showList(model);
 		}
+		
 		List<Employee> employeeList = employeeService.searchByName(form.getName());
 		int searchNum = employeeList.size();
+		
 		if (searchNum == 0) {
-			FieldError fieldError = new FieldError(result.getObjectName(), "name", "検索された結果0件です。全従業員一覧を表示します。");
-			result.addError(fieldError);
+			model.addAttribute("searchMessage", "検索された結果0件です。全従業員一覧を表示します。");
 			return showList(model);
-		} else {
-			model.addAttribute("searchMessage", searchNum + "件検索されました");
-			model.addAttribute("employeeList", employeeList);
-			return "employee/list";
 		}
+		
+		model.addAttribute("searchMessage", searchNum + "件検索されました");
+		model.addAttribute("employeeList", employeeList);
+		return "employee/list";
 	}
 
 	/////////////////////////////////////////////////////
