@@ -49,7 +49,11 @@
 											名前を入力してください
 								 		</label>
 								 		<!-- <label class="control-label" style="color: red" for="name"></label> -->
-								 		<input type="text" name="name" id="name" class="form-control" value="3" th:errorclass="error-input" th:field="*{name}">
+								 		<div class="row">
+                							<div class="col-xs-6">
+								 				<input type="text" name="name" id="name" class="form-control" th:errorclass="error-input" th:field="*{name}" >
+											</div>
+										</div>							    
 							    </td>
 							  </tr>
 							  <tr>
@@ -58,9 +62,9 @@
 							    </th>
 							    <td>
 							    	<label th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="error-messages">
-											名前を入力してください
+											写真を入力してください
 								 		</label>
-										<input type="file" name="image" th:field=*{image}>
+										<input type="file" name="image" class="form-control-file">
 							    </td>
 							  </tr>
 							  <tr>
@@ -88,7 +92,12 @@
 											日付を選択してください
 								 		</label>
 										<!-- <label class="control-label" style="color: red" for="hireDate"></label> -->
-								 		<input type="date" name="hireDate" id="hireDate" class="form-control" th:errorclass="error-input" th:field="*{hireDate}">
+								  <div class="row">
+                				    <div class="col-xs-6">
+								 	  <input type="date" name="hireDate" id="hireDate" class="form-control" th:errorclass="error-input" th:field="*{hireDate}">
+							    	</div>
+							      </div>
+							      
 							    </td>
 							  </tr>
 							  <tr>
@@ -96,11 +105,16 @@
 							      メールアドレス
 							    </th>
 							    <td>
-										<label th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}" class="error-messages">
+								  <label th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}" class="error-messages">
 											メールアドレスを入力してください
-								 		</label>
+								   </label>
 								 		<!-- <label class="control-label" style="color: red" for="mailAddress"></label> -->
-								 		<input type="text" name="mailAddress" id="mailAddress" class="form-control" value="3" th:errorclass="error-input" th:field="*{mailAddress}">
+								   <div class="row">
+                				     <div class="col-xs-6">
+								       <input type="text" name="mailAddress" id="mailAddress" class="form-control" value="3" th:errorclass="error-input" th:field="*{mailAddress}">
+							         </div>
+							       </div>
+							       
 							    </td>
 							  </tr>
 							  <tr>
@@ -112,9 +126,14 @@
 											郵便番号を入力してください
 								 		</label>
 								 		<!-- <label class="control-label" style="color: red" for="zipCode"></label> -->
-								 		<input type="text" name="zipCode" id="zipCode" class="form-control" value="3" th:errorclass="error-input" th:field="*{zipCode}">
-								 		<input type="button" id="search" value="住所検索">
-								 		
+								   <div class="row">
+                				     <div class="col-xs-6">
+								       <input type="text" name="zipCode" id="zipCode" class="form-control" value="3" th:errorclass="error-input" th:field="*{zipCode}">
+								 	 </div>
+                				     <div class="col-xs-6">
+								       <input type="button" id="search" value="住所検索" class="btn btn-primary">
+								 	 </div>
+								   </div>
 							    </td>
 							  </tr>
 							  <tr>
@@ -125,8 +144,12 @@
 										<label th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error-messages">
 											住所を入力してください
 								 		</label>
+								   <div class="row">
+                				     <div class="col-xs-6">
 								 		<!-- <label class="control-label" style="color: red" for="address"></label> -->
-								 		<input type="text" name="address" id="address" class="form-control" th:errorclass="error-input" th:field="*{address}">
+								 	   <input type="text" name="address" id="address" class="form-control" th:errorclass="error-input" th:field="*{address}">
+							    	  </div>
+							    	</div>
 							    </td>
 							  </tr>
 							  <tr>
@@ -138,7 +161,11 @@
 											電話番号を入力してください
 								 		</label>
 								 		<!-- <label class="control-label" style="color: red" for="telephone"></label> -->
-								 		<input type="text" name="telephone" id="telephone" class="form-control" value="3" th:errorclass="error-input" th:field="*{telephone}">
+								 	<div class="row">
+                					  <div class="col-xs-6">
+								 	    <input type="text" name="telephone" id="telephone" class="form-control" value="3" th:errorclass="error-input" th:field="*{telephone}">
+							    	  </div>
+							    	</div>
 							    </td>
 							  </tr>
 							  <tr>
@@ -150,7 +177,14 @@
 											給料を入力してください
 								 		</label>
 								 		<!-- <label class="control-label" style="color: red" for="salary"></label> -->
-								 		<input type="text" name="salary" id="salary" class="form-control" value="3" th:errorclass="error-input" th:field="*{salary}" >円
+								 	<div class="row">
+                					  <div class="col-xs-6">
+								 		<input type="text" name="salary" id="salary" class="form-control" value="3" th:errorclass="error-input" th:field="*{salary}" >
+							    	  </div>
+							    	  <div class="col-xs-6">
+							    	  円
+							    	  </div>
+							    	</div>
 							    </td>
 							  </tr>
 							  <tr>
@@ -162,7 +196,11 @@
 											特性を入力してください
 								 		</label>
 								 		<!-- <label class="control-label" style="color: red" for="characteristics"></label> -->
-										<textarea name="characteristics" id="characteristics" rows="8" cols="80" th:errorclass="error-input" th:field="*{characteristics}"></textarea>
+										<div class="row">
+                						  <div class="col-xs-6">
+										    <textarea name="characteristics" id="characteristics" rows="4" cols="80" th:errorclass="error-input" th:field="*{characteristics}" class="form-control" ></textarea>
+								 		  </div>
+								 		</div>
 								 	</td>
 							  </tr>
 							  <tr>
@@ -174,7 +212,14 @@
 											扶養人数を入力してください
 										</label>
 										<!-- <label class="control-label" style="color: red" for="dependentsCount"></label> -->
-										<input type="text" name="dependentsCount" id="dependentsCount" class="form-control" value="3" th:errorclass="error-input" th:field="*{dependentsCount}">人
+									<div class="row">
+                					  <div class="col-xs-6">
+									    <input type="text" name="dependentsCount" id="dependentsCount" class="form-control" value="3" th:errorclass="error-input" th:field="*{dependentsCount}">
+							    	  </div>
+							    	  <div class="col-xs-2">
+							    	  人
+							    	  </div>
+							    	</div>
 							    </td>
 							  </tr>
 							</table>

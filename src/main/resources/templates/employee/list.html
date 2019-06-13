@@ -26,8 +26,14 @@
 			</li>
 		</ol>
 		<form th:action="@{/employee/search}" th:object="${searchNameForm}" method="post">
-			<input type="text" name="name" id="searchNmae" size="30" th:field="*{name}">
-			<button>検索</button>
+		  <div class="row">
+           <div class="control-label col-xs-2">
+			<input type="text" name="name" id="searchNmae" size="30" th:field="*{name}" class="form-control">
+		   </div>
+		   <div class="col-sm-4 col-md-2">
+			<button class="btn btn-primary">検索</button>
+		   </div>
+		  </div>
 			<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-messages"></div>
 			<div th:text="${searchMessage}"></div>
 		</form>
