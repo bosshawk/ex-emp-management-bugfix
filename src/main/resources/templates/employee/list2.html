@@ -8,25 +8,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>従業員管理システム</title>
 
-<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script th:src="@{/js/bootstrap.min.js}"></script>
-	  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script th:src="@{/js/autocomplete.js}"></script>
+<!-- <link type="text/css" rel="stylesheet"
+  href="http://code.jquery.com/ui/1.10.3/themes/cupertino/jquery-ui.min.css" />
+<script type="text/javascript"
+  src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript"
+  src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script> -->
+  
+<script type="text/javascript" src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
+<!-- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+ -->
+  
+<script >
+$(function() {
+	var seiza = [ "おひつじ座", "おうし座", "ふたご座", "かに座", "しし座", "おとめ座", "てんびん座",
+			"さそり座", "いて座", "やぎ座", "みずがめ座", "うお座" ];
+	$("#searchName").autocomplete({
+		source : seiza
+	});
+});
+</script>
 
 <link rel="stylesheet" href="../../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" >
 <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}" >
 
-	
+
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
 <body>
-
 	<div class="container">
 	
 		<span th:include="/employee/fragment::employee_header"></span>
@@ -40,7 +55,7 @@
 		<form th:action="@{/employee/search}" th:object="${searchNameForm}" method="post">
 		  <div class="row">
            <div class="control-label col-xs-2">
-			<input type="text" name="name" id="searchName" size="30" th:field="*{name}" class="form-control">
+			<input type="text" name="name" id="searchNmae" size="30" th:field="*{name}" class="form-control">
 		   </div>
 		   <div class="col-sm-4 col-md-2">
 			<button class="btn btn-primary">検索</button>
@@ -91,6 +106,8 @@
 	</div>
 	<!-- end container -->
 	
-
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 </html>
