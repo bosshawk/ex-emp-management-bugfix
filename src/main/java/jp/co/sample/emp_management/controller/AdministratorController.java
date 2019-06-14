@@ -52,15 +52,7 @@ public class AdministratorController {
 		return new LoginForm();
 	}
 	
-	/**
-	 * ハッシュエンコードDI.
-	 * 
-	 * @return ハッシュエンコード
-	 */
-	@Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	
 
 	/////////////////////////////////////////////////////
 	// ユースケース：管理者を登録する
@@ -97,14 +89,10 @@ public class AdministratorController {
 			return toInsert();
 		}
 		
-		// ハッシュ化
-		String hashPassword = passwordEncoder().encode(form.getPassword());
-		
 		Administrator administrator = new Administrator();
 		
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		administrator.setPassword(hashPassword);
 		
 		administratorService.insert(administrator);
 		return "redirect:/";
