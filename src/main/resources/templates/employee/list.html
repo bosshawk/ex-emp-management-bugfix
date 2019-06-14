@@ -15,6 +15,21 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script th:src="@{/js/autocomplete.js}"></script>
+  <script th:src="@{/js/jquery.pagination.js}"></script>
+  <script type="text/javascript">
+  $(function() {
+	    $('.employeeList').pagination({
+	        itemElement : '> .employee', 
+	        displayItemCount : 10,
+	        //paginationClassName : 'pagination',
+	        //pageNumberClassName : 'pagination',
+	        paginationInnerClassName : 'pagination',
+	        prevNextPageBtnMode : false,
+	        firstEndPageBtnMode : false
+	    });
+	});
+  
+  </script>
 
 <link rel="stylesheet" href="../../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" >
 <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}" >
@@ -66,8 +81,8 @@
 							<th>扶養人数</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr th:each="employee : ${employeeList}">
+					<tbody class="employeeList">
+						<tr th:each="employee : ${employeeList}" class="employee">
 							<td>
 								<a href="detail.html" th:href="@{'/employee/showDetail?id=' + ${employee.id}}">
 									<span th:text="${employee.name}">山田太郎</span>

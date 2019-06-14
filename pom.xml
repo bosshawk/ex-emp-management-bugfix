@@ -57,12 +57,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- 郵便番号変換 -->
 		<dependency>
 			<groupId>com.googlecode.libphonenumber</groupId>
 			<artifactId>libphonenumber</artifactId>
 			<version>8.8.5</version>
 		</dependency>
-
+		<!-- json型使用 -->
 		<dependency>
 			<groupId>net.arnx</groupId>
 			<artifactId>jsonic</artifactId>
