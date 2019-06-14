@@ -1,17 +1,14 @@
 package jp.co.sample.emp_management.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import jp.co.sample.emp_management.domain.Employee;
@@ -67,6 +64,20 @@ public class EmployeeRepository {
 		List<Employee> developmentList = template.query(sql, EMPLOYEE_ROW_MAPPER);
 
 		return developmentList;
+	}
+	
+	/**
+	 * 従業員名前一覧を入社日順で取得します.
+	 * 
+	 * @return 全従業員名前一覧
+	 */
+	public List<String> findAllName(){
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT name FROM ");
+		sql.append(TABLE_NAME);
+		sql.append(" ORDER BY hire_date DESC ");
+		SqlParameterSource param = new MapSqlParameterSource();
+		return template.queryForList(sql.toString(), param ,String.class);
 	}
 	
 	/**
