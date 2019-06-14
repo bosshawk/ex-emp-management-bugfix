@@ -45,6 +45,15 @@ public class EmployeeService {
 	}
 	
 	/**
+	 * 全従業員名を検索する.
+	 * 
+	 * @return 全従業員名一覧
+	 */
+	public List<String> showNameList(){
+		return employeeRepository.findAllName();
+	}
+	
+	/**
 	 * 名前を指定して従業員一覧を取得.
 	 * 
 	 * @param name : 検索する名前
@@ -92,7 +101,7 @@ public class EmployeeService {
 	 * 
 	 * @param employee 追加する従業員情報
 	 */
-	public synchronized Employee insert(Employee employee) {
+	public Employee insert(Employee employee) {
 		int id = employeeRepository.findByMaxId();
 		employee.setId(id+1);
 		employeeRepository.insert(employee);
