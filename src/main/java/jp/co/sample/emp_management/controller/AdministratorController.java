@@ -4,11 +4,12 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,6 +51,16 @@ public class AdministratorController {
 	public LoginForm setUpLoginForm() {
 		return new LoginForm();
 	}
+	
+	/**
+	 * ハッシュエンコードDI.
+	 * 
+	 * @return ハッシュエンコード
+	 */
+	@Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 	/////////////////////////////////////////////////////
 	// ユースケース：管理者を登録する
@@ -75,7 +86,7 @@ public class AdministratorController {
 	public String insert(
 			@Validated InsertAdministratorForm form,
 			BindingResult result) {
-		if( !form.getMailAddress().equals(form.getConfirmationPassword()) ) {
+		if( !(form.getPassword().equals(form.getConfirmationPassword())) ) {
 			result.rejectValue("confirmationPassword", null, "パスワードと確認用パスワードが一致しません");
 		}
 		Boolean hasMailAddress = administratorService.checkMailAddress(form.getMailAddress());
@@ -86,11 +97,15 @@ public class AdministratorController {
 			return toInsert();
 		}
 		
+		// ハッシュ化
+		String hashPassword = passwordEncoder().encode(form.getPassword());
 		
 		Administrator administrator = new Administrator();
 		
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
+		administrator.setPassword(hashPassword);
+		
 		administratorService.insert(administrator);
 		return "redirect:/";
 		
@@ -120,9 +135,10 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/login")
 	public String login(LoginForm form, BindingResult result, Model model) {
+		
 		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
 		if (administrator == null) {
-			result.addError(new ObjectError("loginError", "メールアドレスまたはパスワードが不正です。"));
+			result.rejectValue("loginError", null, "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
 		}
 		session.setAttribute("administratorName", administrator.getName());

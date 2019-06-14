@@ -1,4 +1,4 @@
-package jp.co.sample.emp_management.component;
+package jp.co.sample.emp_management.comfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
