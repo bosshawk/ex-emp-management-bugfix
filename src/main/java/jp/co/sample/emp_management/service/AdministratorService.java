@@ -25,10 +25,10 @@ public class AdministratorService {
 	 * 
 	 * @return ハッシュエンコード
 	 */
-	@Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//	@Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
